@@ -19,7 +19,7 @@ if False:
     from typing import Any, Dict  # noqa
     from sphinx.application import Sphinx  # noqa
 
-__version__ = pbr.version.VersionInfo("docstypo3").version_string()
+__version__ = pbr.version.VersionInfo("sphinxcontrib-docstypo3").version_string()
 
 substitutions = {}
 substitution_keys = {
