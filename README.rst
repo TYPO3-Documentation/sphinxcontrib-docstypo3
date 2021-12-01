@@ -39,6 +39,31 @@ file:
    release = "1.2.dev3 or main or BRANCH"
    version = "1.2 or main or BRANCH"
 
+In TYPO3 documentation projects you usually don't deal with file `conf.py`
+directly but provide a `Settings.cfg` file that follows the INI-file
+conventions. For this example this looks like this:
+
+.. code-block:: ini
+
+   # example file Settings.cfg:
+
+   [general]
+
+   # everything from section [general] is directly added to `conf.py`
+
+   audience    = Developers
+   author      = TYPO3 Documentation Team
+   t3author    = ((deprecated variable name))
+   copyright   = 2021, TYPO3 Documentation Team
+   description = This is a sample
+      project to demonstrate
+      good style.
+   language    = ((set by Sphinx))
+   license     = MIT license
+   project     = EXTKEY or Short Project Name
+   release     = 1.2.dev3 or main or BRANCH
+   version     = 1.2 or main or BRANCH
+
 To access these configuration values in your documentation you can use the
 replacement syntax with the following keys:
 
@@ -76,16 +101,16 @@ RST source example:
    |cfg_version|     1.2 or main or BRANCH
    ================= ======================================================
 
-Undefined values will be return the empty string.
+Missing values will simply be shown as empty string.
 
-`cfg_author` returns `author` or `t3author` or the empty string in this order.
-
+'cfg_author' will fetch the value of 'author'. If empty, 't3author' is
+consulted.
 
 
 Installation
 ============
 
-Install the latest version:
+Install the latest version as Python module with PIP, the Python packet manager:
 
 .. code-block:: shell
 
