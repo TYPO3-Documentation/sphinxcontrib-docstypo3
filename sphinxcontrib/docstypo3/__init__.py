@@ -25,20 +25,29 @@ substitutions = {}
 substitution_keys = {
     "cfg_audience",
     "cfg_author",
-    "cfg_t3author",
     "cfg_copyright",
     "cfg_description",
     "cfg_language",
     "cfg_license",
     "cfg_maintainer",
     "cfg_project",
+    "cfg_project_contact",
+    "cfg_project_discussions",
+    "cfg_project_home",
+    "cfg_project_issues",
+    "cfg_project_repository",
+    "cfg_published",
     "cfg_release",
+    "cfg_t3author",
     "cfg_version",
 }
 
 def _config_inited(app, config):
     for k in substitution_keys:
-        substitutions[k] = getattr(app.config, k[4:], "")
+        if k.startswith('hto_'):
+            substitutions[k] = getattr(app.config, "html_theme_options", {}).get(k[4:], "")
+        else:
+            substitutions[k] = getattr(app.config, k[4:], "")
 
 
 class OurSubstitutions(SphinxTransform):

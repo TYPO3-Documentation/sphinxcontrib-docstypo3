@@ -30,7 +30,6 @@ file:
 
    audience = "Developers"
    author = "TYPO3 Documentation Team"
-   t3author = "((deprecated variable name))"
    copyright = "2021, TYPO3 Documentation Team"
    description = "This is a sample project to demonstrate good style."
    language = "((set by Sphinx))"
@@ -38,6 +37,7 @@ file:
    maintainer = "John Doe <john.doe@example.org>"
    project = "EXTKEY or Short Project Name"
    release = "1.2.dev3 or main or BRANCH"
+   t3author = "((deprecated variable name))"
    version = "1.2 or main or BRANCH"
 
 In TYPO3 documentation projects you usually don't deal with file `conf.py`
@@ -66,43 +66,70 @@ conventions. For this example this looks like this:
    release     = 1.2.dev3 or main or BRANCH
    version     = 1.2 or main or BRANCH
 
+   # urls
+   project_contact     =
+   project_discussions =
+   project_home        =
+   project_issues      =
+   project_repository  = https://github.com/TYPO3-Documentation/sphinxcontrib-docstypo3
+   published           =
+
 To access these configuration values in your documentation you can use the
 replacement syntax with the following keys:
 
 .. code-block:: python
 
    substitution_keys = {
-       "cfg_audience",
-       "cfg_author",
-       "cfg_t3author",
-       "cfg_copyright",
-       "cfg_description",
-       "cfg_language",
-       "cfg_license",
-       "cfg_maintainer",
-       "cfg_project",
-       "cfg_release",
-       "cfg_version",
+      # configured directly in conf.py
+      "cfg_audience",
+      "cfg_author",
+      "cfg_copyright",
+      "cfg_description",
+      "cfg_language",
+      "cfg_license",
+      "cfg_maintainer",
+      "cfg_project",
+      "cfg_published",
+      "cfg_release",
+      "cfg_t3author",
+      "cfg_version",
+
+      # configured in html_theme_options (hto) in conf.py
+      "hto_project_contact",
+      "hto_project_discussions",
+      "hto_project_home",
+      "hto_project_issues",
+      "hto_project_repository",
    }
 
 RST source example:
 
 .. code-block:: rst
 
-   ================= ======================================================
-   RST source        Result
-   ================= ======================================================
-   |cfg_audience|    Developers
-   |cfg_author|      TYPO3 Documentation Team
-   |cfg_t3author|    ((deprecated variable name))
-   |cfg_copyright|   2021, TYPO3 Documentation Team
-   |cfg_description| This is a sample project to demonstrate good style.
-   |cfg_language|    ((set by Sphinx))
-   |cfg_license|     MIT license
-   |cfg_maintainer|  John Doe <john.doe@example.org>
-   |cfg_release|     1.2.dev3 or main or BRANCH
-   |cfg_version|     1.2 or main or BRANCH
-   ================= ======================================================
+   ============================  ====================================================
+   RST source                    Result
+   ============================  ======================================================
+   # cfg, directly from conf.py
+   |cfg_audience|                Developers
+   |cfg_author|                  TYPO3 Documentation Team
+   |cfg_copyright|               2021, TYPO3 Documentation Team
+   |cfg_description|             This is a sample project to demonstrate good style.
+   |cfg_language|                ((set by Sphinx))
+   |cfg_license|                 MIT license
+   |cfg_maintainer|              John Doe <john.doe@example.org>
+   |cfg_project|                 EXTKEY or Short Project Name
+   |cfg_published|
+   |cfg_release|                  1.2.dev3 or main or BRANCH
+   |cfg_t3author|                ((deprecated variable name))
+   |cfg_version|                  1.2 or main or BRANCH
+
+   # hto, html_theme_options
+   |hto_project_contact|
+   |hto_project_discussions|
+   |hto_project_home|
+   |hto_project_issues|
+   |hto_project_repository|
+   =============================  ======================================================
 
 Missing values will simply be shown as empty string.
 
