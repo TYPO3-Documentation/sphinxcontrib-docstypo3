@@ -18,11 +18,6 @@ if False:
     # For type annotations
     from typing import Any, Dict  # noqa
     from sphinx.application import Sphinx  # noqa
-    SphinxTransform
-    pbr.version
-    TYPE_CHECKING, Any, Dict, Generator, List, Tuple
-    nodes
-
 
 __version__ = pbr.version.VersionInfo("docstypo3").version_string()
 
@@ -30,6 +25,7 @@ substitutions = {}
 substitution_keys = {
     "cfg_audience",
     "cfg_author",
+    "cfg_t3author",
     "cfg_copyright",
     "cfg_description",
     "cfg_language",
@@ -41,8 +37,7 @@ substitution_keys = {
 
 def _config_inited(app, config):
     for k in substitution_keys:
-        v = getattr(app.config, k[4:], "")
-        substitutions[k] = v
+        substitutions[k] = getattr(app.config, k[4:], "")
 
 
 class OurSubstitutions(SphinxTransform):
@@ -59,8 +54,8 @@ class OurSubstitutions(SphinxTransform):
             refname = ref['refname']
             if refname in to_handle:
                 text = substitutions.get(refname, "")
-                if not text and refname == 'ctx_author':
-                    text = substitutions.get('ctx_t3author', "")
+                if not text and refname == 'cfg_author':
+                    text = substitutions.get('cfg_t3author', "")
                 ref.replace_self(nodes.Text(text, text))
 
 def setup(app):
