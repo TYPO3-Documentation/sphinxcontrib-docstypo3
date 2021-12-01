@@ -30,6 +30,7 @@ substitution_keys = {
     "cfg_description",
     "cfg_language",
     "cfg_license",
+    "cfg_maintainer",
     "cfg_project",
     "cfg_release",
     "cfg_version",

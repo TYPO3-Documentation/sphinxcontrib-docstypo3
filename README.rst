@@ -35,6 +35,7 @@ file:
    description = "This is a sample project to demonstrate good style."
    language = "((set by Sphinx))"
    license = "MIT license"
+   maintainer = "John Doe <john.doe@example.org>"
    project = "EXTKEY or Short Project Name"
    release = "1.2.dev3 or main or BRANCH"
    version = "1.2 or main or BRANCH"
@@ -60,6 +61,7 @@ conventions. For this example this looks like this:
       good style.
    language    = ((set by Sphinx))
    license     = MIT license
+   maintainer  = John Doe <john.doe@example.org>
    project     = EXTKEY or Short Project Name
    release     = 1.2.dev3 or main or BRANCH
    version     = 1.2 or main or BRANCH
@@ -77,6 +79,7 @@ replacement syntax with the following keys:
        "cfg_description",
        "cfg_language",
        "cfg_license",
+       "cfg_maintainer",
        "cfg_project",
        "cfg_release",
        "cfg_version",
@@ -96,7 +99,7 @@ RST source example:
    |cfg_description| This is a sample project to demonstrate good style.
    |cfg_language|    ((set by Sphinx))
    |cfg_license|     MIT license
-   |cfg_project|     EXTKEY or Short Project Name
+   |cfg_maintainer|  John Doe <john.doe@example.org>
    |cfg_release|     1.2.dev3 or main or BRANCH
    |cfg_version|     1.2 or main or BRANCH
    ================= ======================================================
