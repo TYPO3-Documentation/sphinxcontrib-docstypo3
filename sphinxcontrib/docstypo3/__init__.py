@@ -31,15 +31,15 @@ substitution_keys = {
     "cfg_license",
     "cfg_maintainer",
     "cfg_project",
-    "cfg_project_contact",
-    "cfg_project_discussions",
-    "cfg_project_home",
-    "cfg_project_issues",
-    "cfg_project_repository",
     "cfg_published",
     "cfg_release",
     "cfg_t3author",
     "cfg_version",
+    "hto_project_contact",
+    "hto_project_discussions",
+    "hto_project_home",
+    "hto_project_issues",
+    "hto_project_repository",
 }
 
 def _config_inited(app, config):
