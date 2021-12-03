@@ -4,10 +4,12 @@
 
     Extend Sphinx behaviour
 
-    :copyright: Copyright 2017 by Martin Bless <martin.bless@mbless.de>
+    :copyright: Copyright 2021 by Martin Bless <martin.bless@mbless.de>
     :license: BSD, see LICENSE for details.
 """
 
+import json
+import logging
 from typing import Any
 
 import pbr.version
@@ -23,18 +25,25 @@ __version__ = pbr.version.VersionInfo("sphinxcontrib-docstypo3").version_string(
 
 substitutions = {}
 substitution_keys = {
-    "cfg_audience",
-    "cfg_author",
-    "cfg_copyright",
-    "cfg_description",
-    "cfg_language",
-    "cfg_license",
-    "cfg_maintainer",
-    "cfg_project",
-    "cfg_published",
-    "cfg_release",
-    "cfg_t3author",
-    "cfg_version",
+    #
+    # Standard Sphinx settings, [general], (prefix: std_)
+    "std_author",
+    "std_copyright",
+    "std_language",  # "en", two-letter-code
+    "std_project",
+    "std_release",
+    "std_version",
+    #
+    # sphinxcontrib-docstypo3, [docstypo3-meta], (prefix: dt3m_)
+    "dt3m_audience",
+    "dt3m_description",
+    "dt3m_doctype",   # Demo, Tutorial, Reference, Book
+    "dt3m_language",  # "English" readable phrase
+    "dt3m_license",
+    "dt3m_maintainer",
+    "dt3m_published",
+    #
+    # Sphinx html_theme_options, [html_theme_options], (prefix: hto_)
     "hto_project_contact",
     "hto_project_discussions",
     "hto_project_home",
@@ -42,12 +51,22 @@ substitution_keys = {
     "hto_project_repository",
 }
 
+
 def _config_inited(app, config):
     for k in substitution_keys:
-        if k.startswith('hto_'):
-            substitutions[k] = getattr(app.config, "html_theme_options", {}).get(k[4:], "")
-        else:
-            substitutions[k] = getattr(app.config, k[4:], "")
+        prefix, name = k.split('_', 1)
+        if prefix == 'std':
+            substitutions[k] = str(getattr(app.config, name, ""))
+        elif prefix == 'hto':
+            substitutions[k] = str(
+                getattr(app.config, "html_theme_options", {})
+                .get(name, ""))
+        elif prefix == 'dt3m':
+            substitutions[k] = str(
+                getattr(app.config, "docstypo3", {})
+                .get("meta", {}).
+                get(name, ""))
+    log.debug(f"[{__name__}] substitutions: {substitutions!r}")
 
 
 class OurSubstitutions(SphinxTransform):
@@ -64,13 +83,12 @@ class OurSubstitutions(SphinxTransform):
             refname = ref['refname']
             if refname in to_handle:
                 text = substitutions.get(refname, "")
-                if not text and refname == 'cfg_author':
-                    text = substitutions.get('cfg_t3author', "")
                 ref.replace_self(nodes.Text(text, text))
 
 def setup(app):
-    app.connect("config-inited", _config_inited)
+    app.add_config_value('docstypo3', {}, 'env')
     app.add_transform(OurSubstitutions)
+    app.connect("config-inited", _config_inited)
 
     # type: (Sphinx) -> Dict[unicode, Any]
     return {
