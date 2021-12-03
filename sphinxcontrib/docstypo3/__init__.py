@@ -21,8 +21,8 @@ if False:
     from typing import Any, Dict  # noqa
     from sphinx.application import Sphinx  # noqa
 
+log = logging.getLogger(__name__)
 __version__ = pbr.version.VersionInfo("sphinxcontrib-docstypo3").version_string()
-
 substitutions = {}
 substitution_keys = {
     #
