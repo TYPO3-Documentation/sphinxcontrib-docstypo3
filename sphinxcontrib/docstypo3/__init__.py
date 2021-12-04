@@ -21,8 +21,8 @@ if False:
     from typing import Any, Dict  # noqa
     from sphinx.application import Sphinx  # noqa
 
-log = logging.getLogger(__name__)
 __version__ = pbr.version.VersionInfo("sphinxcontrib-docstypo3").version_string()
+logger = logging.getLogger(__name__)
 substitutions = {}
 substitution_keys = {
     #
@@ -66,7 +66,7 @@ def _config_inited(app, config):
                 getattr(app.config, "docstypo3", {})
                 .get("meta", {}).
                 get(name, ""))
-    log.debug(f"[{__name__}] substitutions: {substitutions!r}")
+    logger.debug(f"[{__name__}] substitutions: {substitutions!r}")
 
 
 class OurSubstitutions(SphinxTransform):
@@ -79,11 +79,26 @@ class OurSubstitutions(SphinxTransform):
     def apply(self, **kwargs: Any) -> None:
         # only handle those not otherwise defined in the document
         to_handle = substitution_keys - set(self.document.substitution_defs)
+        # logger.warning(f"self.document: {self.document.attributes.get('source')!r}")
         for ref in self.document.traverse(nodes.substitution_reference):
             refname = ref['refname']
+            parts = refname.rsplit('_', 1)
+            # Does refname look like 'prefix_name_r' with '_r' at then end?
+            # If yes, return repr() value instead of str() value
+            fn = str
+            if len(parts) > 1:
+                if parts[1] == "r":
+                    refname = parts[0]
+                    fn = repr
+                elif parts[1] == "json":
+                    refname = parts[0]
+                    fn = json.dumps
             if refname in to_handle:
-                text = substitutions.get(refname, "")
-                ref.replace_self(nodes.Text(text, text))
+                replacement_str = fn(substitutions.get(refname, ""))
+                # What the hell is sometimes going on here?
+                # logger.warning(f"refname: {refname!r}")
+                # logger.warning(f"refnametext: {refnametext!r}")
+                ref.replace_self(nodes.Text(replacement_str, replacement_str))
 
 def setup(app):
     app.add_config_value('docstypo3', {}, 'env')
@@ -93,6 +108,5 @@ def setup(app):
     # type: (Sphinx) -> Dict[unicode, Any]
     return {
         "parallel_read_safe": True,
-        "parallel_write_safe": True,
         "version": __version__,
     }
