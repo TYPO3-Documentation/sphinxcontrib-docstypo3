@@ -86,19 +86,28 @@ class OurSubstitutions(SphinxTransform):
             # Does refname look like 'prefix_name_r' with '_r' at then end?
             # If yes, return repr() value instead of str() value
             fn = str
+            format = ""
             if len(parts) > 1:
-                if parts[1] == "r":
+                format = parts[1]
+                if format == "r":
                     refname = parts[0]
                     fn = repr
-                elif parts[1] == "json":
+                elif format == "json":
                     refname = parts[0]
                     fn = json.dumps
+                elif format == "link":
+                    refname = parts[0]
+                    fn = str
             if refname in to_handle:
                 replacement_str = fn(substitutions.get(refname, ""))
                 # What the hell is sometimes going on here?
                 # logger.warning(f"refname: {refname!r}")
                 # logger.warning(f"refnametext: {refnametext!r}")
-                ref.replace_self(nodes.Text(replacement_str, replacement_str))
+                if format == "link":
+                    if replacement_str:
+                        ref.replace_self(nodes.reference(replacement_str, replacement_str, refuri=replacement_str, internal=False))
+                else:
+                    ref.replace_self(nodes.Text(replacement_str, replacement_str))
 
 def setup(app):
     app.add_config_value('docstypo3', {}, 'env')
