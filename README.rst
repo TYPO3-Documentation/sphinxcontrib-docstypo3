@@ -48,23 +48,31 @@ conventions. For this example this looks like this:
 
    # example file Settings.cfg:
 
-   [general]
+    [general]
 
-   # everything from section [general] is directly added to `conf.py`
+    ; endless list of all of the general simple settings
+    ; you can use in 'conf.py'
 
-   audience    = Developers
-   author      = TYPO3 Documentation Team
-   t3author    = ((deprecated variable name))
-   copyright   = 2021, TYPO3 Documentation Team
-   description = This is a sample
-      project to demonstrate
-      good style.
-   language    = ((set by Sphinx))
-   license     = MIT license
-   maintainer  = John Doe <john.doe@example.org>
-   project     = EXTKEY or Short Project Name
-   release     = 1.2.dev3 or main or BRANCH
-   version     = 1.2 or main or BRANCH
+    author    = TYPO3 Documentation Team
+    copyright = 2021, TYPO3 Documentation Team
+    language  = en
+    project   = EXTKEY or Short Project Name
+    release   = 1.2.dev3 or main or BRANCH
+    version   = 1.2 or main or BRANCH
+
+
+    [docstypo3-meta]
+
+    audience    = Developers and editors of TYPO3 documentation
+    description = This is a multiline example
+       description for a nonexisting
+       project.
+    doctype     = Technical rendering test example
+    language    = English (US)
+    license     = CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+    maintainer  = John Doe <john.doe@example.org>
+    t3author    = ((deprecated variable name))
+    website     = Read online (#)
 
    # urls
    project_contact     =
@@ -79,62 +87,72 @@ replacement syntax with the following keys:
 
 .. code-block:: python
 
-   substitution_keys = {
-      # configured directly in conf.py
-      "cfg_audience",
-      "cfg_author",
-      "cfg_copyright",
-      "cfg_description",
-      "cfg_language",
-      "cfg_license",
-      "cfg_maintainer",
-      "cfg_project",
-      "cfg_published",
-      "cfg_release",
-      "cfg_t3author",
-      "cfg_version",
-
-      # configured in html_theme_options (hto) in conf.py
-      "hto_project_contact",
-      "hto_project_discussions",
-      "hto_project_home",
-      "hto_project_issues",
-      "hto_project_repository",
-   }
+    substitution_keys = {
+        #
+        # Standard Sphinx settings, [general], (prefix: std_)
+        "std_author",
+        "std_copyright",
+        "std_language",  # "en", two-letter-code
+        "std_project",
+        "std_release",
+        "std_version",
+        #
+        # sphinxcontrib-docstypo3, [docstypo3-meta], (prefix: dt3m_)
+        "dt3m_audience",
+        "dt3m_description",
+        "dt3m_doctype",   # Demo, Tutorial, Reference, Book
+        "dt3m_language",  # "English" readable phrase
+        "dt3m_license",
+        "dt3m_maintainer",
+        "dt3m_website",
+        #
+        # Sphinx html_theme_options, [html_theme_options], (prefix: hto_)
+        "hto_bitbucket_host",
+        "hto_bitbucket_repo",
+        "hto_bitbucket_user",
+        "hto_bitbucket_version",
+        "hto_github_host",
+        "hto_github_repo",
+        "hto_github_user",
+        "hto_github_version",
+        "hto_gitlab_host",
+        "hto_gitlab_repo",
+        "hto_gitlab_user",
+        "hto_gitlab_version",
+        "hto_project_contact",
+        "hto_project_discussions",
+        "hto_project_home",
+        "hto_project_issues",
+        "hto_project_repository",
+    }
 
 RST source example:
 
 .. code-block:: rst
 
    ============================  ====================================================
-   RST source                    Result
+   Markup                        Result
    ============================  ======================================================
-   # cfg, directly from conf.py
-   |cfg_audience|                Developers
-   |cfg_author|                  TYPO3 Documentation Team
-   |cfg_copyright|               2021, TYPO3 Documentation Team
-   |cfg_description|             This is a sample project to demonstrate good style.
-   |cfg_language|                ((set by Sphinx))
-   |cfg_license|                 MIT license
-   |cfg_maintainer|              John Doe <john.doe@example.org>
-   |cfg_project|                 EXTKEY or Short Project Name
-   |cfg_published|
-   |cfg_release|                  1.2.dev3 or main or BRANCH
-   |cfg_t3author|                ((deprecated variable name))
-   |cfg_version|                  1.2 or main or BRANCH
+   |std_author||                 TYPO3 Documentation Team
+   |std_copyright|               2021, TYPO3 Documentation Team
+   |std_language|                en
+   |std_project|                 EXTKEY or Short Project Name
+   |std_release|                 1.2.dev3 or main or BRANCH
+   |std_version|                 1.2 or main or BRANCH
 
-   # hto, html_theme_options
-   |hto_project_contact|
-   |hto_project_discussions|
-   |hto_project_home|
-   |hto_project_issues|
-   |hto_project_repository|
-   =============================  ======================================================
+   |dt3m_audience|               Developers and editors of TYPO3 documentation
+   |dt3m_description|            This is a sample project to demonstrate good style.
+   |dt3m_doctype|                Technical rendering test example
+   |dt3m_language|               English (US)
+   |dt3m_license|                `CC-BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   |dt3m_maintainer|             John Doe <john.doe@example.org>
+   |dt3m_website|                `Read online <#>`__
+   ============================  ======================================================
 
-Missing values will simply be shown as empty string.
+Unset values will be replaced by the empty string.
 
-'cfg_author' will fetch the value of 'author'. If empty, 't3author' is
-consulted.
+Unknown replacements will be left untouched.
+
 
 
 Installation
