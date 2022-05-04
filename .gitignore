@@ -39,9 +39,6 @@ output/*/index.html
 # Sphinx
 doc/build
 
-# pbr
-AUTHORS
-ChangeLog
 
 # Editors
 *~
